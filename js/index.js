@@ -20,8 +20,7 @@ window.onload = function() {
   function startGame(){
     myGameArea.start();
     background.draw();
-    snowMan.draw();
-    
+    snowMan.draw(); 
   }
   
   function updateGameArea(){
@@ -29,6 +28,7 @@ window.onload = function() {
     background.draw();
     snowMan.draw();
     snowMan.move();
+    snowMan.checkCrash();
   }
   class Background {
     constructor(source, width, height){
@@ -40,11 +40,44 @@ window.onload = function() {
       this.height = height;
     }
     draw() {
-    
-        console.log('desenhei o background')
-      myGameArea.ctx.drawImage(this.img, this.x, this.y,this.width, this.height);
-       
+    console.log('desenhei o background')
+    myGameArea.ctx.drawImage(this.img, this.x, this.y,this.width, this.height);
     }
   }  
-   const background = new Background('../images/fundo6.jpg',800, 500);
-}
+
+  class SnowMan{
+    constructor(source, x, width, height){
+      this.img = new Image();
+      this.img.src = source;
+      this.x = x;
+      this.y = 160;
+      this.width = width;
+      this.height = height;
+      this.speed = 1;
+    }
+    draw(){
+      console.log('desenhei o boneco')
+        myGameArea.ctx.drawImage(this.img, this.x, this.y,this.width, this.height);
+    }
+    move(){
+     this.x += this.speed;
+     if(this.x === 620) {
+       this.speed = -1;
+     }
+     if(this.x === 120) this.speed = 1
+     console.log(this.x)
+     console.log(this.speed)
+    }
+    left(){
+      return this.x;
+    }
+    rigth(){
+      return this.x + this.width;
+    }
+    checkCrash(ball){
+      return !(ball.left()> this.rigth()||ball.rigth()<this.left())
+    }
+  }
+  const snowMan = new SnowMan('../images/boneco3.png',120, 120, 200);
+  const background = new Background('../images/fundo6.jpg',800, 500);
+}  
