@@ -28,7 +28,7 @@ window.onload = function() {
     background.draw();
     snowMan.draw();
     snowMan.move();
-    //snowMan.checkCrash();
+    snowMan.checkCrash();
   }
   class Background {
     constructor(source, width, height){
@@ -78,7 +78,6 @@ window.onload = function() {
       return !(ball.left()> this.rigth()||ball.rigth()<this.left())
     }
   }
-  
   const snowMan = new SnowMan('../images/boneco3.png',120, 120, 200);
   const background = new Background('../images/fundo6.jpg',800, 500);
 }  
