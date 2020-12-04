@@ -15,14 +15,17 @@ window.onload = function() {
     clear: function () {
       this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }, 
-    balls : []
+    balls : [],
+    /*stop : function (){
+      this.clear();
+      background.draw();
+    }*/
   }
   function startGame(){
     myGameArea.start();
     background.draw();
     snowMan.draw(); 
     snowBall.draw();
-    
   }
   function updateGameArea(){
     myGameArea.clear();
@@ -80,6 +83,7 @@ window.onload = function() {
         console.log(`x da bola ${this.x}`);
         console.log(`x do boneco ${snowMan.x}`)
         }
+        myGameArea.stop();
       }
      }
   left(){
