@@ -6,48 +6,130 @@ window.onload = function() {
  
  const myGameArea = {
     canvas: document.querySelector('#canvas'),
-    clicks : 0,
     press : 0,
     balls : [],
-      start: function() {
+    countRound : 0,
+    score : 0,
+    countHits : 0,
+    level : 0,
+    message : true,
+    start: function() {
       this.ctx = this.canvas.getContext('2d');
       this.canvas.width = 800;
       this.canvas.height = 500;
-      this.interval = setInterval(updateGameArea, 20);
+      if(!this.interval){
+        this.interval = setInterval(updateGameArea, 20);
+      }
     },
     clear: function () {
       this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }, 
     stop : function (){
-      console.log('entrei no stop')
+      
       clearInterval(this.interval);
-      console.log('executei clear interval')
-      setTimeout(this.gameOver, 1000);
+      if(this.countRound % 2 === 0 && this.countHits % 1 ===0) {
+        this.countHits = 0;
+        myGameArea.gameOver();
+      }else{
+        console.log(myGameArea.message);
+        if(myGameArea.message === true){
+        myGameArea.ctx.fillStyle = 'red';
+        myGameArea.ctx.font = '28px serif';
+        myGameArea.ctx.fillText(`Tente Novamente`,320,130);
+        }
+       /* let time = 3;
+        while(time >= 1){
+        myGameArea.ctx.fillText(`${time}`,420,230);
+        //setTimeout(myGameArea.clear(), 1000);
+        time -= 1;
+        }*/
+      setTimeout(this.newRound, 1000);
+      }
     },
     gameOver: function () {
       console.log('entrei no game over')
       myGameArea.clear();
+      myGameArea.ctx.fillStyle = 'black';
+      myGameArea.ctx.fillRect(0, 0, 800, 500);
+      myGameArea.ctx.fillStyle = 'red';
+      myGameArea.ctx.font = '38px serif';
+      myGameArea.ctx.fillText('GAME OVER',200,250);
+      document.getElementById("restart-button").style.display = "block";
+      document.getElementById("restart-button").onclick = function() {
+        reStart();
+      }
+    },
+    newRound: () => {
+      myGameArea.balls.splice(0,1);
+      snowMan.x = parseInt(Math.random() * (620-120) + 120);
+      snowMan.speed = 2;
+      getSpeed = 0;
+      getX = 0;
+      myGameArea.press = 0;
+      forceControl.z = 2;
+      forceControl.speed =150;
+      directionControl.z = 2;
+      directionControl.x = 0;
+      myGameArea.interval = setInterval(updateGameArea, 20);
+      
+    },
+    newLevel: function(){
+      myGameArea.balls.splice(0,1);
+      snowMan.x = parseInt(Math.random() * (620-120) + 120);
+      getSpeed = 0;
+      getX = 0;
+      myGameArea.press = 0;
+      forceControl.z = 2;
+      forceControl.speed =150;
+      directionControl.z = 2;
+      directionControl.x = 0;
+      if(!this.interval) this.interval = setInterval(updateGameArea, 20);
     }
   }
+      function reStart(){
+        document.getElementById("restart-button").style.display = 'none';
+        console.log('entrei na restart')
+        myGameArea.canvas = document.querySelector('#canvas');
+        myGameArea.press = 0;
+        myGameArea.balls = [];
+        myGameArea.countRound = 0;
+        myGameArea.score = 0;
+        myGameArea.countHits = 0;
+        myGameArea.level = 0;
+        snowMan.x = parseInt(Math.random() * (620-120) + 120);
+        snowMan.speed = 2;
+        getSpeed = 0;
+        getX = 0;
+        forceControl.z = 2;
+        forceControl.speed =150;
+        directionControl.z = 2;
+        directionControl.x = 0;
+        myGameArea.interval = setInterval(updateGameArea,20);
+     }
+
   function startGame(){
+    document.getElementById("game").style.display = 'flex';
+    document.getElementById("pageInitial").style.display = 'none';
     myGameArea.start();
-    background.draw();
-    snowMan.draw(); 
-    //snowBall.draw();
   }
   function updateGameArea(){
+ 
     myGameArea.clear();
     background.draw();
     snowMan.draw();
     snowMan.move();
-    //snowMan.checkCrash();
     directionControl.draw();
     directionControl.move();
     forceControl.draw();
     forceControl.move();
-    myGameArea.balls[0].draw();
-    myGameArea.balls[0].move();
-    verColisao();
+    updateBall();
+    checkColisao();
+  }
+  function updateBall(){
+    for(let i = 0; i < myGameArea.balls.length; i += 1){
+      myGameArea.balls[i].move();
+      myGameArea.balls[i].draw();
+    }
   }
   
   class Background {
@@ -61,6 +143,12 @@ window.onload = function() {
     }
     draw() {
     myGameArea.ctx.drawImage(this.img, this.x, this.y,this.width, this.height);
+    myGameArea.ctx.fillStyle = 'red';
+    myGameArea.ctx.font = '28px serif';
+    myGameArea.ctx.fillText(`Rodada ${myGameArea.countRound}`,20,30);
+    myGameArea.ctx.fillText(`Acertos ${myGameArea.score}`,180,30);
+    myGameArea.ctx.fillText(`Nivel ${myGameArea.level}`,320,30);
+    
     }
   }  
 
@@ -126,46 +214,63 @@ window.onload = function() {
     }
   }
 
-  function verColisao(){
+  function checkColisao(){
+    myGameArea.message = true;
+    for(let i =0; i < myGameArea.balls.length; i += 1){
     if(myGameArea.balls[0].y < 305){
-        
+        myGameArea.countRound += 1;
       if(snowMan.checkCrash(myGameArea.balls[0])===true){
         console.log('colisão')
         myGameArea.balls[0].speed = 0;
         myGameArea.balls[0].y = 306;
-
+        snowMan.speed = 0;
+        myGameArea.countHits += 1;
+        myGameArea.score += 1;
+        myGameArea.message = false;
+        /*if(myGameArea.countHits > 5) {
+          myGameArea.level += 1;
+          snowMan.speed += 4;
+          setTimeout(myGameArea.newLevel(),1000);
+        }*/
         myGameArea.stop();
-      //myGameArea.ctx.fillRect(300,300,100,100);
-      //myGameArea.ctx.clearRect(300,300,100,100);
-      
       }
       if(snowMan.checkCrash(myGameArea.balls[0])===false){
         console.log('não colidiu')
-      myGameArea.ctx.fillRect(400,400,100,100);
-      myGameArea.ctx.clearRect(400,400,100,100);
+        myGameArea.balls[0].speed = 0;
+        myGameArea.balls[0].y = 306;
+        snowMan.speed = 0;
+        //myGameArea.ctx.fillStyle = 'red';
+        //myGameArea.ctx.font = '28px serif';
+        //myGameArea.ctx.fillText(`Tente Novamente`,320,130);
+        myGameArea.stop();
       }
      
     }
   }
-
+  }
+  
   class SnowMan{
-    constructor(source, x, width, height){
+    constructor(source, x, width, height,speed){
       this.img = new Image();
       this.img.src = source;
       this.x = x;
       this.y = 160;
       this.width = width;
       this.height = height;
-      this.speed = 2;
+      //this.speed = 2;
+      this.speed = speed;
     }
     draw(){
         myGameArea.ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
     }
     move(){
-     this.x += this.speed;
-     if(this.x === 620) this.speed = -2;
-     if(this.x === 120) this.speed = 2
-    
+      this.x += this.speed;
+     if(this.x >= canvas.width - 200) this.speed = - this.speed;
+     if(this.x <= (canvas.width -canvas.width) + 100) this.speed = - this.speed;
+     /*this.x += this.speed;
+     if(this.x >= 620) this.speed = -2;
+     if(this.x <= 120) this.speed = 2;
+    */
     }
     left(){
       return this.x + 15;
@@ -177,9 +282,7 @@ window.onload = function() {
       return !(ball.left()> this.rigth()||ball.rigth()<this.left())
     }
   }  
-
-  
-  const snowMan = new SnowMan('../images/boneco3.png',120, 120, 200);
+  const snowMan = new SnowMan('../images/boneco3.png',120, 120, 200, 2);
   //const snowBall = new SnowBall('../images/bola-de-neve.png',450, 439, 100, 100);
   const snowBall = new SnowBall();
   function newBall(x,speed){
@@ -210,22 +313,18 @@ function getPosition(e) {
 let getX = 0;
 let getSpeed = 0;
 document.addEventListener('keydown', (e) => {
-  console.log(myGameArea.press);
   if(myGameArea.press === 0){
     if (e.keyCode === 32) {
       getX = directionControl.x;
       directionControl.z = 0;
-      console.log(getX);
     }
   }
   if(myGameArea.press === 1){
     if (e.keyCode === 32) {
       getSpeed = forceControl.speed;
       forceControl.z = 0;
-      console.log(getSpeed);
       newBall(getX, getSpeed);
       myGameArea.press = 1;
-      
     }
   }
   myGameArea.press +=1;
@@ -235,12 +334,16 @@ class ForceControl{
   constructor(){
     this.speed = 150;
     this.z = 0;
+    this.img = new Image();
+    this.img.src = '../images/barra-velocidade.png'
   }
   draw(){
-    myGameArea.ctx.fillStyle = 'red';
+    myGameArea.ctx.drawImage(this.img,10,150,20,200);
     myGameArea.ctx.strokeRect(10, 150, 20,200);
-    myGameArea.ctx.fill();
-    myGameArea.ctx.beginPath(); 
+    
+    //myGameArea.ctx.fill();
+    //myGameArea.ctx.beginPath(); 
+    myGameArea.ctx.fillStyle = 'red';
     myGameArea.ctx.fillRect(10, this.speed, 20, 20);
     myGameArea.ctx.closePath();
   }
@@ -256,7 +359,6 @@ class ForceControl{
      this.x = 0;
      this.z = 0;
    }
- 
   draw(){
     myGameArea.ctx.fillStyle = 'red';
     myGameArea.ctx.strokeRect(0, 480, 800,20);
@@ -275,4 +377,5 @@ class ForceControl{
   const background = new Background('../images/fundo6.jpg',800, 500);
   const directionControl = new DirectionControl();
   const forceControl = new ForceControl();
+
 }  

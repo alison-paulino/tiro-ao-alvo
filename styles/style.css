@@ -1,7 +1,27 @@
-#canvas{
-    border:  1px solid blue;
-}
+
 body {
   text-align: center;
   margin-top: 160px;
+}
+#canvas{
+  border:  1px solid blue;
+  
+}
+#game{
+  justify-content:center;
+  display: none;
+  
+}
+#pageInitial {
+  display: flex;
+  height: 500;
+  justify-content: center;
+}
+#restart-button {
+display:none;
+}
+#game-area{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
 }
