@@ -1,11 +1,15 @@
+
+
 window.onload = function() {
   document.getElementById("start-button").onclick = function() {
     startGame();
+    music[1].play();
+    
   }
-  
- 
+
  const myGameArea = {
     canvas: document.querySelector('#canvas'),
+    spaceControl : false,
     press : 0,
     balls : [],
     countRound : 0,
@@ -25,44 +29,60 @@ window.onload = function() {
       this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }, 
     stop : function (){
-      
       clearInterval(this.interval);
-      if(this.countRound % 2 === 0 && this.countHits % 1 ===0) {
-        this.countHits = 0;
-        myGameArea.gameOver();
-      }else{
-        console.log(myGameArea.message);
-        if(myGameArea.message === true){
-        myGameArea.ctx.fillStyle = 'red';
-        myGameArea.ctx.font = '28px serif';
-        myGameArea.ctx.fillText(`Tente Novamente`,320,130);
-        }
-       /* let time = 3;
-        while(time >= 1){
-        myGameArea.ctx.fillText(`${time}`,420,230);
-        //setTimeout(myGameArea.clear(), 1000);
-        time -= 1;
-        }*/
-      setTimeout(this.newRound, 1000);
+      music[1].play();
+
+      if(this.countRound % 1  === 0 ) {
+       if(this.countRound /5 * this.countHits  < this.countRound / 5 * 3 ){
+          this.counRound = 0;
+        return  myGameArea.gameOver();
+        }else 
+        myGameArea.level += 1;
+        myGameArea.countHits = 0;
+        setTimeout(this.newRound, 1000);
       }
+      else{
+           console.log(myGameArea.message);
+        if(myGameArea.message === true){
+           myGameArea.ctx.fillStyle = 'red';
+           myGameArea.ctx.font = '28px serif';
+           myGameArea.ctx.fillText(`Tente Novamente`,320,130);
+        }
+        setTimeout(this.newRound, 1000);
+      }
+        
     },
     gameOver: function () {
       console.log('entrei no game over')
+      music[1].pause();
+      music[2].play();
       myGameArea.clear();
-      myGameArea.ctx.fillStyle = 'black';
-      myGameArea.ctx.fillRect(0, 0, 800, 500);
+      let img = new Image();
+      img.src = '../images/fundo1.jpg';
+      img.onload = function() {
+      myGameArea.ctx.drawImage(img,0,0,800,500);
+      myGameArea.ctx.fillStyle = '#350E9E';
       myGameArea.ctx.fillStyle = 'red';
       myGameArea.ctx.font = '38px serif';
-      myGameArea.ctx.fillText('GAME OVER',200,250);
+      myGameArea.ctx.fillText('GAME OVER',280,150);
+      myGameArea.ctx.fillText(`Pontuação: ${myGameArea.score} `,280,250);
+      myGameArea.ctx.fillText(`Level: ${myGameArea.level}`,280,300);
+      }
       document.getElementById("restart-button").style.display = "block";
       document.getElementById("restart-button").onclick = function() {
         reStart();
       }
+      document.getElementById("menu").style.display = "block";
+      document.getElementById("menu").onclick = function() {
+        window.location.href = "index.html";
+      }
+
     },
     newRound: () => {
       myGameArea.balls.splice(0,1);
-      snowMan.x = parseInt(Math.random() * (620-120) + 120);
-      snowMan.speed = 2;
+      snowMan.x = parseInt(Math.random() * (520-120) + 120);
+      snowMan.speed = myGameArea.level + 2;
+      console.log(snowMan.speed);
       getSpeed = 0;
       getX = 0;
       myGameArea.press = 0;
@@ -73,22 +93,11 @@ window.onload = function() {
       myGameArea.interval = setInterval(updateGameArea, 20);
       
     },
-    newLevel: function(){
-      myGameArea.balls.splice(0,1);
-      snowMan.x = parseInt(Math.random() * (620-120) + 120);
-      getSpeed = 0;
-      getX = 0;
-      myGameArea.press = 0;
-      forceControl.z = 2;
-      forceControl.speed =150;
-      directionControl.z = 2;
-      directionControl.x = 0;
-      if(!this.interval) this.interval = setInterval(updateGameArea, 20);
-    }
   }
       function reStart(){
+        music[1].play();
         document.getElementById("restart-button").style.display = 'none';
-        console.log('entrei na restart')
+        document.getElementById("menu").style.display = 'none';
         myGameArea.canvas = document.querySelector('#canvas');
         myGameArea.press = 0;
         myGameArea.balls = [];
@@ -96,7 +105,7 @@ window.onload = function() {
         myGameArea.score = 0;
         myGameArea.countHits = 0;
         myGameArea.level = 0;
-        snowMan.x = parseInt(Math.random() * (620-120) + 120);
+        snowMan.x = parseInt(Math.random() * (520-120) + 120);
         snowMan.speed = 2;
         getSpeed = 0;
         getX = 0;
@@ -108,12 +117,18 @@ window.onload = function() {
      }
 
   function startGame(){
+    myGameArea.spaceControl = true;
+    console.log("entrei na start");
+    console.log(myGameArea.spaceControl);
     document.getElementById("game").style.display = 'flex';
-    document.getElementById("pageInitial").style.display = 'none';
+    //document.getElementById("pageInitial").style.display = 'none';
+    document.getElementById("home").style.display = 'none';
+    document.getElementById("regras").style.display = 'none';
+    document.getElementById("owner").style.display = 'none';
+    document.getElementById("my-menu").style.display = 'none';
     myGameArea.start();
   }
   function updateGameArea(){
- 
     myGameArea.clear();
     background.draw();
     snowMan.draw();
@@ -146,8 +161,8 @@ window.onload = function() {
     myGameArea.ctx.fillStyle = 'red';
     myGameArea.ctx.font = '28px serif';
     myGameArea.ctx.fillText(`Rodada ${myGameArea.countRound}`,20,30);
-    myGameArea.ctx.fillText(`Acertos ${myGameArea.score}`,180,30);
-    myGameArea.ctx.fillText(`Nivel ${myGameArea.level}`,320,30);
+    myGameArea.ctx.fillText(`Acertos ${myGameArea.score}`,155,30);
+    myGameArea.ctx.fillText(`Nivel ${myGameArea.level}`,300,30);
     
     }
   }  
@@ -220,18 +235,15 @@ window.onload = function() {
     if(myGameArea.balls[0].y < 305){
         myGameArea.countRound += 1;
       if(snowMan.checkCrash(myGameArea.balls[0])===true){
-        console.log('colisão')
+        music[1].pause();
+        music[0].play();
         myGameArea.balls[0].speed = 0;
         myGameArea.balls[0].y = 306;
         snowMan.speed = 0;
         myGameArea.countHits += 1;
         myGameArea.score += 1;
         myGameArea.message = false;
-        /*if(myGameArea.countHits > 5) {
-          myGameArea.level += 1;
-          snowMan.speed += 4;
-          setTimeout(myGameArea.newLevel(),1000);
-        }*/
+      
         myGameArea.stop();
       }
       if(snowMan.checkCrash(myGameArea.balls[0])===false){
@@ -239,9 +251,6 @@ window.onload = function() {
         myGameArea.balls[0].speed = 0;
         myGameArea.balls[0].y = 306;
         snowMan.speed = 0;
-        //myGameArea.ctx.fillStyle = 'red';
-        //myGameArea.ctx.font = '28px serif';
-        //myGameArea.ctx.fillText(`Tente Novamente`,320,130);
         myGameArea.stop();
       }
      
@@ -267,10 +276,7 @@ window.onload = function() {
       this.x += this.speed;
      if(this.x >= canvas.width - 200) this.speed = - this.speed;
      if(this.x <= (canvas.width -canvas.width) + 100) this.speed = - this.speed;
-     /*this.x += this.speed;
-     if(this.x >= 620) this.speed = -2;
-     if(this.x <= 120) this.speed = 2;
-    */
+    
     }
     left(){
       return this.x + 15;
@@ -286,33 +292,13 @@ window.onload = function() {
   //const snowBall = new SnowBall('../images/bola-de-neve.png',450, 439, 100, 100);
   const snowBall = new SnowBall();
   function newBall(x,speed){
-    myGameArea.balls.push(new SnowBall('./images/bola-de-neve.png',x, 439, 100, 100, speed));
+    myGameArea.balls.push(new SnowBall('./images/bad-ball.png',x, 439, 200, 200, speed));
     console.log(myGameArea.balls);
   }
-  
-/*  
-document.addEventListener('click', getPosition, true);
-let clickPosition = {x : 0, speed : 0}
-function getPosition(e) {
-  if(myGameArea.clicks === 0){
-    // click botao start
-    console.log(myGameArea.clicks);
-    }
-    if(myGameArea.clicks ===1){
-      clickPosition.x = e.pageX;
-      console.log(myGameArea.clicks);
-    }
-    if(myGameArea.clicks ===2){
-      clickPosition.speed = e.pageY;
-      console.log(myGameArea.clicks);
-      newBall(clickPosition.x, clickPosition.speed);
-      myGameArea.clicks = 0;
-    }
-    myGameArea.clicks += 1;    
-} */
 let getX = 0;
 let getSpeed = 0;
 document.addEventListener('keydown', (e) => {
+  if(myGameArea.spaceControl === true){
   if(myGameArea.press === 0){
     if (e.keyCode === 32) {
       getX = directionControl.x;
@@ -328,6 +314,7 @@ document.addEventListener('keydown', (e) => {
     }
   }
   myGameArea.press +=1;
+}
 })
 
 class ForceControl{
@@ -340,9 +327,6 @@ class ForceControl{
   draw(){
     myGameArea.ctx.drawImage(this.img,10,150,20,200);
     myGameArea.ctx.strokeRect(10, 150, 20,200);
-    
-    //myGameArea.ctx.fill();
-    //myGameArea.ctx.beginPath(); 
     myGameArea.ctx.fillStyle = 'red';
     myGameArea.ctx.fillRect(10, this.speed, 20, 20);
     myGameArea.ctx.closePath();
@@ -374,8 +358,10 @@ class ForceControl{
     if(this.x === 800)this.z = -2
   }
 }
-  const background = new Background('../images/fundo6.jpg',800, 500);
+
+  const background = new Background('../images/fundo2.jpg',800, 600);
   const directionControl = new DirectionControl();
   const forceControl = new ForceControl();
 
+  
 }  
