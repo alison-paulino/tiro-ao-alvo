@@ -55,8 +55,8 @@ margin-left: 260px;
   margin-left: 260px;
   }
   .capa-jogo img{
-    height: 400px;
-    width: 1406px;
+    height: auto;
+    width: 100%;
   }
   .logo img {
     height: 50px;
