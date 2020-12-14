@@ -32,7 +32,7 @@ window.onload = function() {
       clearInterval(this.interval);
       music[1].play();
 
-      if(this.countRound % 1  === 0 ) {
+      if(this.countRound % 5  === 0 ) {
        if(this.countRound /5 * this.countHits  < this.countRound / 5 * 3 ){
           this.counRound = 0;
         return  myGameArea.gameOver();
@@ -58,7 +58,7 @@ window.onload = function() {
       music[2].play();
       myGameArea.clear();
       let img = new Image();
-      img.src = '../images/fundo1.jpg';
+      img.src = './images/fundo1.jpg';
       img.onload = function() {
       myGameArea.ctx.drawImage(img,0,0,800,500);
       myGameArea.ctx.fillStyle = '#350E9E';
@@ -178,7 +178,7 @@ window.onload = function() {
       this.speed = speed;
     }
     draw(){
-    myGameArea.ctx.drawImage(this.img, this.x, this.y,this.width, this.height);    
+    myGameArea.ctx.drawImage(this.img, this.x - 35, this.y,this.width, this.height);    
     }
     move(){ 
       if(this.speed >= 150 && this.speed < 187) this.speed = -2.5
@@ -191,31 +191,51 @@ window.onload = function() {
         this.y += this.speed;
         this.width -= 0.25;
         this.height -= 0.25;
-        if(this.x > 500) this.x -= 0.1;
+        if(this.x > 500) this.x -= 0.08;
+        else{
+          if(this.x < 300) this.x += 0.22;
+        }
+        console.log(this.x);
       }
       if(this.speed == -1){ 
         this.y += this.speed;
         this.width -= 0.5;
         this.height -= 0.5;
-        if(this.x > 500) this.x -= 0.1;
+        if(this.x > 500) this.x -= 0.08;
+        else{
+          if(this.x < 300) this.x += 0.22;
+        }
+        console.log(this.x);
       }
       if(this.speed == -1.5){ 
         this.y += this.speed;
         this.width -= 0.75;
         this.height -= 0.75;
-        if(this.x > 500) this.x -= 0.1;
+        if(this.x > 500) this.x -= 0.08;
+        else{
+          if(this.x < 300) this.x += 0.22;
+        }
+        console.log(this.x);
       }
       if(this.speed == -2){ 
         this.y += this.speed;
         this.width -= 1;
         this.height -= 1;
-        if(this.x > 500) this.x -= 0.1;
+        if(this.x > 500) this.x -= 0.08;
+        else{
+          if(this.x < 300) this.x += 0.22;
+        }
+        console.log(this.x);
       }
       if(this.speed == -2.5){ 
         this.y += this.speed;
         this.width -= 1.3;
         this.height -= 1.3;
-        if(this.x > 500) this.x -= 0.1;
+        if(this.x > 500) this.x -= 0.08;
+        else{
+          if(this.x < 300) this.x += 0.22;
+        }
+        console.log(this.x);
       }
       
       }
@@ -247,7 +267,7 @@ window.onload = function() {
         myGameArea.stop();
       }
       if(snowMan.checkCrash(myGameArea.balls[0])===false){
-        console.log('não colidiu')
+        console.log('não colidiu');
         myGameArea.balls[0].speed = 0;
         myGameArea.balls[0].y = 306;
         snowMan.speed = 0;
@@ -279,21 +299,21 @@ window.onload = function() {
     
     }
     left(){
-      return this.x + 15;
+      return this.x + 10;
     }
     rigth(){
-      return this.x -15 + this.width;
+      return this.x -10 + this.width;
     }
     checkCrash(ball){
       return !(ball.left()> this.rigth()||ball.rigth()<this.left())
     }
   }  
-  const snowMan = new SnowMan('../images/boneco3.png',120, 120, 200, 2);
-  //const snowBall = new SnowBall('../images/bola-de-neve.png',450, 439, 100, 100);
+  const snowMan = new SnowMan('./images/boneco3.png',120, 120, 200, 2);
+  //const snowBall = new SnowBall('./images/bola-de-neve.png',450, 439, 100, 100);
   const snowBall = new SnowBall();
   function newBall(x,speed){
-    myGameArea.balls.push(new SnowBall('./images/bad-ball.png',x, 439, 200, 200, speed));
-    console.log(myGameArea.balls);
+    myGameArea.balls.push(new SnowBall('./images/bad-ball.png',x, 439, 100, 100, speed));
+    console.log(myGameArea.balls[0]);
   }
 let getX = 0;
 let getSpeed = 0;
@@ -322,7 +342,7 @@ class ForceControl{
     this.speed = 150;
     this.z = 0;
     this.img = new Image();
-    this.img.src = '../images/barra-velocidade.png'
+    this.img.src = './images/barra-velocidade.png'
   }
   draw(){
     myGameArea.ctx.drawImage(this.img,10,150,20,200);
@@ -344,12 +364,11 @@ class ForceControl{
      this.z = 0;
    }
   draw(){
-    myGameArea.ctx.fillStyle = 'red';
+    myGameArea.ctx.fillStyle = 'white';
     myGameArea.ctx.strokeRect(0, 480, 800,20);
     myGameArea.ctx.fill();
     myGameArea.ctx.beginPath(); 
     myGameArea.ctx.arc(this.x, 480, 15, 0, Math.PI *2);
-    //myGameArea.ctx.fillRect((this.x), 480, 800,15);
     myGameArea.ctx.closePath();
   }
   move(){
@@ -359,7 +378,7 @@ class ForceControl{
   }
 }
 
-  const background = new Background('../images/fundo2.jpg',800, 600);
+  const background = new Background('./images/fundo2.jpg',800, 600);
   const directionControl = new DirectionControl();
   const forceControl = new ForceControl();
 
