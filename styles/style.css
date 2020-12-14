@@ -1,7 +1,71 @@
-#canvas{
-    border:  1px solid blue;
-}
+
 body {
   text-align: center;
-  margin-top: 160px;
+
 }
+*{
+  /*border: 1px solid red;*/
+
+}
+
+#canvas{
+  border:  1px solid black;
+ margin-top: 10px; 
+}
+#game{
+  justify-content:center;
+  display: none;
+  flex-direction: column;
+  margin-left: 250px;
+  margin-right: 250px;
+  
+}
+#pageInitial {
+  display: flex;
+  justify-content: center;
+}
+.card {
+  color: black;
+  margin-top: 40px;
+  margin-left: 100px;
+  
+}
+#start-button {
+font-size: 30px;
+justify-content: center;
+width: 300px;
+margin-top: 70px;
+margin-bottom: 10px;
+
+}
+#restart-button {
+display: none;
+font-size: 20px;
+justify-content: center;
+width: 300px;
+margin-top: 1px;
+margin-left: 260px;
+}
+#menu {
+  display: none;
+  font-size: 20px;
+  justify-content: center;
+  width: 300px;
+  margin-top: 1px;
+  margin-left: 260px;
+  }
+  .capa-jogo img{
+    height: 400px;
+    width: 1406px;
+  }
+  .logo img {
+    height: 50px;
+    width: 50px;
+  }
+#owner a {
+  text-decoration: none;
+  color: white;
+  
+}
+
+
