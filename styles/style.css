@@ -1,4 +1,8 @@
 
+/*body {
+  text-align: center;
+}*/
+
 #canvas{
   border:  1px solid black;
  margin-top: 10px; 
@@ -51,7 +55,7 @@ margin-top: 1px;
     width: 50px;
   }
 #owner {
-  height: 580px;
+  height: 530px;
 }  
 #owner a {
   text-decoration: none;
@@ -61,10 +65,18 @@ margin-top: 1px;
 }
 #owner img {
   border-radius: 100px;
-  margin: 50px 0px 20px 0px;
+}
+#info-pessoal {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: 40%;
+  margin-top: 20px;
 }
 #icons {
-  margin-top:50px;
+  display: flex;
+  justify-content: center;
+  margin-top:40px;
 }
 .card {
   margin-top: 40px;
@@ -85,6 +97,7 @@ margin-top: 1px;
 .card-img {
  height: 620px;
 }
+
 
 
 
