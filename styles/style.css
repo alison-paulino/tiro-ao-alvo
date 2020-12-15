@@ -45,12 +45,12 @@ margin-top: 1px;
   margin-top: 1px;
   margin-left:1px;
   }
-  .capa-jogo img{
+.capa-jogo img{
     height: auto;
     width: 100%;
     margin-top: 10px;
   }
-  .logo img {
+.logo img {
     height: 50px;
     width: 50px;
   }
@@ -97,7 +97,9 @@ margin-top: 1px;
 .card-img {
  height: 620px;
 }
-
+#my-menu img {
+  border-radius: 100px;
+}
 
 
 
