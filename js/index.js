@@ -1,12 +1,9 @@
 
-
 window.onload = function() {
   document.getElementById("start-button").onclick = function() {
     startGame();
-    music[1].play();
-    
+    music[1].play(); 
   }
-
  const myGameArea = {
     canvas: document.querySelector('#canvas'),
     spaceControl : false,
@@ -25,10 +22,12 @@ window.onload = function() {
         this.interval = setInterval(updateGameArea, 20);
       }
     },
-    clear: function () {
+    //função para limpar o canvas
+    clear: function () { 
       this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }, 
-    stop : function (){
+    // função que interrompe o set interval
+    stop : function (){ 
       clearInterval(this.interval);
       music[1].play();
 
@@ -52,7 +51,8 @@ window.onload = function() {
       }
         
     },
-    gameOver: function () {
+    //função para verificar se é game over
+    gameOver: function () { 
       console.log('entrei no game over')
       music[1].pause();
       music[2].play();
@@ -78,6 +78,7 @@ window.onload = function() {
       }
 
     },
+    // função que inicia uma nova rodada
     newRound: () => {
       myGameArea.balls.splice(0,1);
       snowMan.x = parseInt(Math.random() * (520-120) + 120);
@@ -94,6 +95,7 @@ window.onload = function() {
       
     },
   }
+  // função que reinicia o jogo após o game over
       function reStart(){
         music[1].play();
         document.getElementById("restart-button").style.display = 'none';
@@ -121,13 +123,13 @@ window.onload = function() {
     console.log("entrei na start");
     console.log(myGameArea.spaceControl);
     document.getElementById("game").style.display = 'flex';
-    //document.getElementById("pageInitial").style.display = 'none';
     document.getElementById("home").style.display = 'none';
     document.getElementById("regras").style.display = 'none';
     document.getElementById("owner").style.display = 'none';
     document.getElementById("my-menu").style.display = 'none';
     myGameArea.start();
   }
+  // função que executada a cada interval
   function updateGameArea(){
     myGameArea.clear();
     background.draw();
@@ -140,13 +142,13 @@ window.onload = function() {
     updateBall();
     checkColisao();
   }
+  // função que atualiza a posição da bola
   function updateBall(){
     for(let i = 0; i < myGameArea.balls.length; i += 1){
       myGameArea.balls[i].move();
       myGameArea.balls[i].draw();
     }
   }
-  
   class Background {
     constructor(source, width, height){
       this.img = new Image();
@@ -166,7 +168,7 @@ window.onload = function() {
     
     }
   }  
-
+// Classe Boneco de neve
   class SnowBall{
     constructor(source, x, y, width, height,speed){
       this.img = new Image();
@@ -195,7 +197,6 @@ window.onload = function() {
         else{
           if(this.x < 300) this.x += 0.22;
         }
-        console.log(this.x);
       }
       if(this.speed == -1){ 
         this.y += this.speed;
@@ -205,7 +206,6 @@ window.onload = function() {
         else{
           if(this.x < 300) this.x += 0.22;
         }
-        console.log(this.x);
       }
       if(this.speed == -1.5){ 
         this.y += this.speed;
@@ -215,7 +215,6 @@ window.onload = function() {
         else{
           if(this.x < 300) this.x += 0.22;
         }
-        console.log(this.x);
       }
       if(this.speed == -2){ 
         this.y += this.speed;
@@ -225,7 +224,6 @@ window.onload = function() {
         else{
           if(this.x < 300) this.x += 0.22;
         }
-        console.log(this.x);
       }
       if(this.speed == -2.5){ 
         this.y += this.speed;
@@ -235,7 +233,6 @@ window.onload = function() {
         else{
           if(this.x < 300) this.x += 0.22;
         }
-        console.log(this.x);
       }
       
       }
@@ -248,7 +245,7 @@ window.onload = function() {
       return this.x + this.width;
     }
   }
-
+// função para verificar se houve ou não colisão
   function checkColisao(){
     myGameArea.message = true;
     for(let i =0; i < myGameArea.balls.length; i += 1){
@@ -277,16 +274,14 @@ window.onload = function() {
     }
   }
   }
-  
   class SnowMan{
     constructor(source, x, width, height,speed){
       this.img = new Image();
       this.img.src = source;
       this.x = x;
-      this.y = 160;
+      this.y = 180;
       this.width = width;
       this.height = height;
-      //this.speed = 2;
       this.speed = speed;
     }
     draw(){
@@ -299,17 +294,17 @@ window.onload = function() {
     
     }
     left(){
-      return this.x + 10;
+    
+      return this.x + 25;
     }
     rigth(){
-      return this.x -10 + this.width;
+      return this.x + this.width;
     }
     checkCrash(ball){
       return !(ball.left()> this.rigth()||ball.rigth()<this.left())
     }
   }  
-  const snowMan = new SnowMan('./images/boneco3.png',120, 120, 200, 2);
-  //const snowBall = new SnowBall('./images/bola-de-neve.png',450, 439, 100, 100);
+  const snowMan = new SnowMan('./images/boneco2.png',120, 120, 200, 2);
   const snowBall = new SnowBall();
   function newBall(x,speed){
     myGameArea.balls.push(new SnowBall('./images/bad-ball.png',x, 439, 100, 100, speed));
@@ -336,7 +331,7 @@ document.addEventListener('keydown', (e) => {
   myGameArea.press +=1;
 }
 })
-
+// Classe criada para determinar a velocidade da bola
 class ForceControl{
   constructor(){
     this.speed = 150;
@@ -357,14 +352,14 @@ class ForceControl{
    if(this.speed === 330)this.z = -2
   }
 }  
-
+// Clase criada para determina a direção de lançamento da bola
  class DirectionControl{
    constructor(){
      this.x = 0;
      this.z = 0;
    }
   draw(){
-    myGameArea.ctx.fillStyle = 'white';
+    myGameArea.ctx.fillStyle = '#E0FFFF';
     myGameArea.ctx.strokeRect(0, 480, 800,20);
     myGameArea.ctx.fill();
     myGameArea.ctx.beginPath(); 
@@ -377,10 +372,7 @@ class ForceControl{
     if(this.x === 800)this.z = -2
   }
 }
-
   const background = new Background('./images/fundo2.jpg',800, 600);
   const directionControl = new DirectionControl();
-  const forceControl = new ForceControl();
-
-  
+  const forceControl = new ForceControl(); 
 }  
