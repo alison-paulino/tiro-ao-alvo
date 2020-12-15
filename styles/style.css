@@ -1,7 +1,4 @@
 
-body {
-  text-align: center;
-}
 #canvas{
   border:  1px solid black;
  margin-top: 10px; 
@@ -24,22 +21,25 @@ justify-content: center;
 width: 300px;
 margin-top: 30px;
 }
+#button-second-screen {
+  display: flex;
+  justify-content: space-around;
+}
+
 #restart-button {
 display: none;
 font-size: 20px;
 justify-content: center;
-width: 300px;
+width: 200px;
 margin-top: 1px;
-margin-left: 260px;
-
 }
 #menu {
   display: none;
   font-size: 20px;
   justify-content: center;
-  width: 300px;
+  width: 200px;
   margin-top: 1px;
-  margin-left: 260px;
+  margin-left:1px;
   }
   .capa-jogo img{
     height: auto;
@@ -57,14 +57,14 @@ margin-left: 260px;
   text-decoration: none;
   color: white;
   font-size: 25px;
-  margin: 40px;
+  margin-right: 40px;
 }
 #owner img {
   border-radius: 100px;
-  margin: 50px 0px 50px 0px;
+  margin: 50px 0px 20px 0px;
 }
 #icons {
-  margin-top: 80px;
+  margin-top:50px;
 }
 .card {
   margin-top: 40px;
@@ -74,7 +74,7 @@ margin-left: 260px;
 .card1 {
   margin-top: 30px;
   margin-left: 52px;
-  width: 26rem;
+  width: 24rem;
 }
 .card-body {
  border-radius: 5px;
