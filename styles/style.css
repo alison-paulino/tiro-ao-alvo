@@ -55,7 +55,7 @@ margin-top: 1px;
     width: 50px;
   }
 #owner {
-  height: 530px;
+  height: 550px;
 }  
 #owner a {
   text-decoration: none;
@@ -78,29 +78,35 @@ margin-top: 1px;
   justify-content: center;
   margin-top:40px;
 }
-.card {
-  margin-top: 40px;
-  margin-left: 20%;
-  width: 690px;
+.container {
+  display: flex;
+  justify-content: center;
 }
-.card1 {
-  margin-top: 30px;
-  margin-left: 52px;
-  width: 24rem;
+.card {
+  margin-top: 75px;
+  height: 546px;
+  width: 600px;
 }
 .card-body {
- border-radius: 5px;
+  width: 34rem;
+}
+.card h2{
+ margin-left:35px;
 }
 .card p {
+  margin-left:35px;
+  font-size: 12px;
   text-align: justify;
-}
-.card-img {
- height: 620px;
 }
 #my-menu img {
   border-radius: 100px;
 }
-
-
+#home {
+  border: 1px solid white;
+}
+#regras {
+  border: 1px solid white;
+  
+}
 
 
